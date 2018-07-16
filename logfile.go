@@ -16,13 +16,13 @@ wanglei.ok@foxmail.com
 package logfile
 
 import (
-	"os"
+	"fmt"
 	"io"
+	"log"
+	"os"
 	"path/filepath"
 	"strings"
-	"fmt"
 	"time"
-	"log"
 )
 
 //取得当前可执行程序路径
@@ -60,15 +60,13 @@ func createLogDir() string {
 	if createDir(logPath) {
 		return logPath
 	}
-	return  ""
+	return ""
 }
-
 
 type myWriter struct {
 	createdDate string
-	file *os.File
+	file        *os.File
 }
-
 
 func (t *myWriter) Write(p []byte) (n int, err error) {
 
@@ -110,6 +108,6 @@ func (t *myWriter) rotateFile(now time.Time) error {
 //标志位log.Ldate | log.Lmicroseconds
 //设置日志输出到文件 ./log/baseName_YYYYMMDD.log
 func Setup() {
-	log.SetFlags(log.Ldate | log.Lmicroseconds | log.Lshortfile )
+	log.SetFlags(log.Ldate | log.Lmicroseconds | log.Lshortfile)
 	log.SetOutput(io.MultiWriter(&myWriter{}, os.Stderr))
 }
